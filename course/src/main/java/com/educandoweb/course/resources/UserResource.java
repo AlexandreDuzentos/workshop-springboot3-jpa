@@ -9,13 +9,13 @@ import com.educandoweb.course.entities.User;
 
 /* 
  * annotation indicando que essa classe é um resource implementado
- * por um controlador web.
+ * por um controller web.
  **/
 @RestController 
 
 /* 
- * annotation que indica o caminho do controlador rest, ou seja, o caminho
- * na qual esse controlador rest responderá a requisições.
+ * annotation que indica o caminho do controlller rest, ou seja, o caminho
+ * na qual esse controller rest responderá a requisições.
  *  */
 @RequestMapping(value = "/users")
 public class UserResource {
