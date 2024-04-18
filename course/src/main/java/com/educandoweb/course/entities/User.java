@@ -1,12 +1,15 @@
 package com.educandoweb.course.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 /* @Entity - annotation para fazer o mapeamento do JPA da nossa
@@ -35,6 +38,27 @@ public class User implements Serializable {
 	  private String email;
 	  private String phone;
 	  private String password;
+	  
+	  /* Um objeto cujo tipo é uma coleção não deve possuir o 
+	   * método set, pois ele, trocaria a coleção, e esse
+	   * não é um comportamento desejável para o sistema.
+	   * 
+	   * Deve ter apenas o método get.
+	   * 
+	   * O lado do um para muitos também pode ser mapeado no jpa,
+	   * é opcional, caso você queira acessar um objeto do tipo
+	   * User e automaticamente acessar os Orders associados ao user.
+	   * 
+	   * @OneToMany - essa annotation serve para informar para o
+	   * jpa que esse é o lado um da associação.
+	   * 
+	   * o mappedBy recebe o nome do atributo que tem lá do outro
+	   * lado da associação.
+	   * */
+	  
+	  
+	  @OneToMany(mappedBy = "client")
+	  private List<Order> orders = new ArrayList<>();
 	  
 	  public User() {
 	  }
@@ -102,6 +126,10 @@ public class User implements Serializable {
 			return false;
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	public List<Order> getOrders() {
+		return orders;
 	}
 
 
