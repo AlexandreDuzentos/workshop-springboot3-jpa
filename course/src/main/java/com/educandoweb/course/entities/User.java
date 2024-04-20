@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -56,7 +58,24 @@ public class User implements Serializable {
 	   * lado da associação.
 	   * */
 	  
-	  
+	  /*
+	   * Ocorrerá um erro de recursão infinita ou seja de loop
+	   * infinito quando uma requisição for feita para o resource
+	   * User, por que entre a entidade Order e User existe uma 
+	   * associação de mão dupla, dentro de Order temos uma referência
+	   * para User e dentro de User temos uma referência para uma lista de Orders e
+	   * então a nossa biblioteca de serialização fica chamando, o usuário
+	   * chama o Order e o Order chama o User e fica nesse loop infinito.
+	   * 
+	   * @JsonIgnore - é uma annotation que serve para evitar o error de
+	   * recursão infinita, ela deve ser colocada em um dos dois lados
+	   * da associação pelo menos, pois quando é feita chamada de um user
+	   * os orders associados a ele também são carregados e cada um desses
+	   * Orders também chama o User associado a ele, daí o loop infinito,
+	   * então essa annotation já impede que os Orders associados ao
+	   * user sejam carregados.
+	   * */
+	  @JsonIgnore
 	  @OneToMany(mappedBy = "client")
 	  private List<Order> orders = new ArrayList<>();
 	  

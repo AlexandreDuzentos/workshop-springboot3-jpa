@@ -3,6 +3,8 @@ package com.educandoweb.course.entities;
 import java.io.Serializable;
 import java.time.Instant;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,7 +29,11 @@ public class Order implements Serializable {
 	 * Antes da versão 8 do java, usamos o tipo Date para trabalhar
 	 * com datas, mas após a versão surgir o tipo Instant que é muito
 	 * melhor para trabalhar com datas.
+	 * 
+	 * @JsonFormat - annotation para garantir que o moment seja exibido no Json
+	 * no formato ISO 8601 com data-hora global com o fuso GMT/UTC.
 	 * */
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-mm-dd'T'hh:mm:ss'Z'", timezone="GMT")
 	private Instant moment;
 	
 	/* 
@@ -48,9 +54,10 @@ public class Order implements Serializable {
 	
 	public Order() {}
 	
-	public Order(Long id, Instant moment) {
+	public Order(Long id, Instant moment, User client) {
 		this.id = id;
 		this.moment = moment;
+		this.client = client;
 	}
 
 	public Long getId() {

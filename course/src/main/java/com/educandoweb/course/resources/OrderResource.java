@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.educandoweb.course.entities.User;
-import com.educandoweb.course.services.UserService;
+import com.educandoweb.course.entities.Order;
+import com.educandoweb.course.services.OrderService;
 
 /* 
  * annotation indicando que essa classe é um resource implementado
@@ -22,11 +22,11 @@ import com.educandoweb.course.services.UserService;
  * annotation que indica o caminho do controlller rest, ou seja, o caminho
  * na qual esse controller rest responderá a requisições(esse é um endpoint)
  *  */
-@RequestMapping(value = "/users")
-public class UserResource {
+@RequestMapping(value = "/orders")
+public class OrderResource {
 	
 	@Autowired
-	private UserService userService;
+	private OrderService OrderService;
 
 	/* 
 	 * O método findAll é um endpoint para acessar os usuários, o 
@@ -36,11 +36,11 @@ public class UserResource {
 	 * ResponseEntity é um generics, ele espera um tipo de entrada.
 	 * 
 	 * @GetMapping - Annotation para indicar que esse método
-	 * responde a requisições http get no endpoint /users.
+	 * responde a requisições http get no endpoint /Orders.
 	 *  */
 	@GetMapping
-	public ResponseEntity<List<User>> findAll(){
-		List<User> list = userService.findAll();
+	public ResponseEntity<List<Order>> findAll(){
+		List<Order> list = OrderService.findAll();
 		
 		/* 
 		 * ResponseEntity.ok() - retorna uma resposta de sucesso
@@ -53,26 +53,21 @@ public class UserResource {
 	
 	/*
 	 * @GetMapping - Annotation para indicar que esse método
-	 * responde a requisições http get no endpoint /users/id
+	 * responde a requisições http get no endpoint /Orders/id
 	 * 
 	 * @Pathvariable - annotation que serve para informar para 
 	 * o spring que o parâmetro que chegará na url deve ser
 	 * considerado como o parâmetro do método findById.
 	 * 
-	 * Quando é feita a chamada de um User pelo id ou qualquer
-	 * outro campo, o jpa automaticamente também traz os Orders associados
-	 * a aquele User,o jpa não isso de forma automatica quando eu estou
-	 * no lado do um e outro lado é o dos muitos,para isso ser feito
-	 * precisamos usar @OneToMany(mappedBy = "nomeDoAtributoDoOutroLadoDaAssociacao")
-	 * 
-	 * Quando você tem uma associação para muitos, o JPA não carrega
-	 * o objeto para muitos, isso é oque chamamos de lazy loading, isso
-	 * para não estourar a memória do seu computador.
+	 * Quando é feita a chamada de um Order pelo id ou qualquer
+	 * outro campo, o jpa automaticamente também traz o User associado
+	 * a aquele order, isso quando eu estou no lado do muitos e outro
+	 * lado é o lado do um.
 	 */
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<User> findById(@PathVariable Long id){
-		User user = userService.findById(id);
-		return ResponseEntity.ok().body(user);
+	public ResponseEntity<Order> findById(@PathVariable Long id){
+		Order Order = OrderService.findById(id);
+		return ResponseEntity.ok().body(Order);
 	}
 	  
 }
