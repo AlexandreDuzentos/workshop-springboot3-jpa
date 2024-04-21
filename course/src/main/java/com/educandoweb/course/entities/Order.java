@@ -3,6 +3,7 @@ package com.educandoweb.course.entities;
 import java.io.Serializable;
 import java.time.Instant;
 
+import com.educandoweb.course.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Entity;
@@ -37,6 +38,13 @@ public class Order implements Serializable {
 	private Instant moment;
 	
 	/* 
+	 * Alteramos o tipo de da enumeração de OrderStatus para Integer
+	 * para dizer explícitamente que estou gravando no banco de dados
+	 * um número inteiro.
+	 * */
+	private Integer orderStatus;
+	
+	/* 
 	 * @ManyToOne - annotation para imformar para o jpa que essa
 	 * é um chave estrangeira, a chave estrageira é criada no lado
 	 * muitos, que no caso corresponde a entidade Order.
@@ -54,10 +62,26 @@ public class Order implements Serializable {
 	
 	public Order() {}
 	
-	public Order(Long id, Instant moment, User client) {
+	public Order(Long id, Instant moment,OrderStatus orderStatus, User client) {
 		this.id = id;
 		this.moment = moment;
+		setOrderStatus(orderStatus);
 		this.client = client;
+	}
+
+	public OrderStatus getOrderStatus() {
+		/* convertendo um valor do tipo Integer para OrderStatus */
+		return OrderStatus.valueOf(orderStatus);
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		/* 
+		 * convertendo um valor do tipo OrderStatus para um
+		 * valor do tipo Integer.
+		 * */
+		if(orderStatus != null) {
+		   this.orderStatus = orderStatus.getCode();
+		}
 	}
 
 	public Long getId() {
