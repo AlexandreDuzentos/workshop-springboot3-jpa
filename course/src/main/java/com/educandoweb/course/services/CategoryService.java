@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.educandoweb.course.entities.User;
-import com.educandoweb.course.repositories.UserRepository;
+import com.educandoweb.course.entities.Category;
+import com.educandoweb.course.repositories.CategoryRepository;
 
 /* @Component - essa annotation serve para registrar a minha classe
  * como um componente do spring.
@@ -23,26 +23,26 @@ import com.educandoweb.course.repositories.UserRepository;
  *	
  * */
 @Service
-public class UserService {
+public class CategoryService {
    
 	@Autowired
-	private UserRepository userRepository;
+	private CategoryRepository categoryRepository;
 	
 	/* 
 	 * método findAll repassando a chamada do método findAll para a data
 	 * access layer.
 	 * */
-	public List<User> findAll(){
-		return userRepository.findAll();
+	public List<Category> findAll(){
+		return categoryRepository.findAll();
 	}
 	
 	/* 
 	 * método findById repassando a chamada do método findbyId para a data
 	 * access layer.
 	 *  */
-	public User findById(Long id) {
+	public Category findById(Long id) {
 		/* O objeto Opcional existe desde o java 8 */
-		Optional<User> opt =  userRepository.findById(id);
+		Optional<Category> opt =  categoryRepository.findById(id);
 		
 		/* A operação get do objeto genérico Optional retorna
 		 * um objeto do tipo com a qual a classe Optional foi

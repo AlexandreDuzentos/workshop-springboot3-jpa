@@ -15,7 +15,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 /* @Entity - annotation para fazer o mapeamento do JPA da nossa
- * entidade User.
+ * entidade User, para que está seja uma entidade do meu sistema
+ * gerenciada pelo JPA.
  * 
  * @Table - annotation para definir o nome da tabela correspondente
  * a entidade user que será criado no banco de dados.

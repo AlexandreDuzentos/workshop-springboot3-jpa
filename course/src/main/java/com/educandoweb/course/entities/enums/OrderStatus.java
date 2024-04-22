@@ -3,7 +3,7 @@ package com.educandoweb.course.entities.enums;
 public enum OrderStatus {
     
 	/* O java por padrão atribui um valor numérico a cada um dos
-	 * estados de um tipo enumerado, começando pelo zero.Porém isso
+	 * estados de um tipo enumerado, começando pelo zero, porém isso
 	 * pode deixar o nosso banco de dados errado, pois se num futuro
 	 * um programador inexperiente adicionar um novo estado a esse
 	 * tipo enumerado antes de qualquer local antes do último estado,
