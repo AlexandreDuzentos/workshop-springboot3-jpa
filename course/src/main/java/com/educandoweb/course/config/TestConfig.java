@@ -55,7 +55,7 @@ public class TestConfig implements CommandLineRunner {
 	/*
 	 * Injeção de dependência por framework(spring boot)
 	 * 
-	 * A annotaton @Autowired serve para informar para o spring que ele
+	 * A annotation @Autowired serve para informar para o spring que ele
 	 * deve fazer uma injeção de dependência para esse atributo.
 	 * 
 	 * Fazer uma injeção de dependência é instânciar um objeto do tipo
@@ -110,6 +110,24 @@ public class TestConfig implements CommandLineRunner {
 		categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
 		
 		productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
+		
+		/* Adicionando uma Category a lista de categories
+		 * associada a um Product, ou seja, estou associando
+		 * categories a products.
+		 * 
+		 * Isso também poderia ser feito através de um método
+		 * chamado addCategory da classe Product.
+		 * */
+		p1.getCategories().add(cat2);
+		p2.getCategories().add(cat1);
+		p2.getCategories().add(cat3);
+		p3.getCategories().add(cat3);
+		p4.getCategories().add(cat3);
+		p5.getCategories().add(cat2);
+		
+		/* Salvando novamente os products, porém agora eles já
+		 * estão associados a suas respectivas categories*/
+		productRepository.saveAll(Arrays.asList(p2, p3, p4, p5));
 		
 	}
 }

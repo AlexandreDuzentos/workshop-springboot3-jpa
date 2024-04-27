@@ -9,8 +9,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "tb_product")
@@ -28,13 +30,34 @@ public class Product implements Serializable {
   private Double price;
   private String imgUrl;
   
-  /* A instanciação é feita para a minha coleção não comece valendo
-   * null, ao instanciar, ela comecará vazia, porém instânciada.
+  /*  A instanciação é feita para a minha coleção não comece valendo
+   *  null, ao instanciar, ela comecará vazia, porém instânciada.
    * 
-   *  @Transient - annotation para informar ao spring boot para não
+   *  Estamos a usar a estrura Set, pois ela não admite repetições
+   *  e não podemos ter um Product com Categories repetidas.
+   * 
+   *  @Transient - annotation para informar ao jpa para não
    *  interpretar esse propriedade.
+   *  
+   *  @JoinTable - annotation para específicar o nome da tabela de
+   *  associação entre as entidades product e category, bem como
+   *  o nome da chave estrangeira correspondente a entidade em
+   *  que nos encontramos(Product), essa annotation deve estar em
+   *  apenas uma das entidades que farão parte da associação muitos-para-muitos.
+   *  
+   *  joinColumns = @JoinColumn(name = "product_id") - seta o nome
+   *  da chave estrangeira da entidade em que nos encontramos na tabela
+   *  de associação "tb_product_category"
+   *  
+   *  inverseJoinColumns = @JoinColumn(name = "category_id") - seta o nome
+   *  da chave estrangeira  outra entidade da associação muitos-para-muitos
+   *  na tabela de associação "tb_product_category"
    * */
-  @Transient
+  
+  @ManyToMany
+  @JoinTable(name = "tb_product_category",
+  joinColumns = @JoinColumn(name = "product_id"),
+  inverseJoinColumns = @JoinColumn(name = "category_id"))
   private Set<Category> categories = new HashSet<>();
   
   public Product() {}

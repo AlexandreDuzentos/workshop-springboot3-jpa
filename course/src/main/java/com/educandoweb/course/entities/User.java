@@ -18,8 +18,26 @@ import jakarta.persistence.Table;
  * entidade User, para que está seja uma entidade do meu sistema
  * gerenciada pelo JPA.
  * 
+ * Ao importar o pacote relacionado a annotation @Entity havia duas
+ * opções, sendo uma a jakarta.persistence.Entity e a outra
+ * a org.hibernate.annotations.entity, a primeira é a especificação
+ * do jpa e a segunda a implementação do jpa que foi baixada pelo
+ * maven, nós sempre vamos dar preferência para a específicação, é
+ * sempre bom fazer a sua classe depender da especificação e não da
+ * implementação.
+ * 
  * @Table - annotation para definir o nome da tabela correspondente
  * a entidade user que será criado no banco de dados.
+ * 
+ * Personalizamos o nome da tabela a ser criada pelo JPA no banco de
+ * dados para tb_user, pois o nome dessa entidade(User) é uma palavra
+ * reservada no banco de dados.
+ * 
+ * Entidades estão implementando Serializable pois nesse caso elas são
+ * objetos persistentes, ou seja, eles serão trafegados pela rede
+ * na hora de realizar alguma operação de persistência no banco de
+ * dados, como por exemplo, a operação saveAll da interface
+ * JPARepository.
  * */
 @Entity
 @Table(name = "tb_user")
@@ -63,10 +81,12 @@ public class User implements Serializable {
 	   * Ocorrerá um erro de recursão infinita ou seja de loop
 	   * infinito quando uma requisição for feita para o resource
 	   * User, por que entre a entidade Order e User existe uma 
-	   * associação de mão dupla, dentro de Order temos uma referência
+	   * associação de mão dupla ou bidirecional, dentro de Order temos uma referência
 	   * para User e dentro de User temos uma referência para uma lista de Orders e
-	   * então a nossa biblioteca de serialização fica chamando, o usuário
-	   * chama o Order e o Order chama o User e fica nesse loop infinito.
+	   * então na hora de serializar os objetos para json a nossa
+	   * biblioteca de serialização fica chamando, o usuário chama o Order e o
+	   * Order chama o User e fica nesse loop infinito.
+	   * 
 	   * 
 	   * @JsonIgnore - é uma annotation que serve para evitar o error de
 	   * recursão infinita, ela deve ser colocada em um dos dois lados

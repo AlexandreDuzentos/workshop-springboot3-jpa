@@ -20,7 +20,9 @@ import com.educandoweb.course.services.UserService;
 
 /* 
  * annotation que indica o caminho do controlller rest, ou seja, o caminho
- * na qual esse controller rest responderá a requisições(esse é um endpoint)
+ * na qual esse controller rest responderá a requisições.
+ * 
+ * Esse é o nosso controller web que responde no caminho users
  *  */
 @RequestMapping(value = "/users")
 public class UserResource {
@@ -53,7 +55,8 @@ public class UserResource {
 	
 	/*
 	 * @GetMapping - Annotation para indicar que esse método
-	 * responde a requisições http get no endpoint /users/id
+	 * responde a requisições http get no endpoint /users/id,
+	 * indica que a requisição aceitará um id dentro da Url.
 	 * 
 	 * @Pathvariable - annotation que serve para informar para 
 	 * o spring que o parâmetro que chegará na url deve ser
@@ -63,7 +66,7 @@ public class UserResource {
 	 * outro campo, o jpa automaticamente também traz os Orders associados
 	 * a aquele User,o jpa não isso de forma automatica quando eu estou
 	 * no lado do um e outro lado é o dos muitos,para isso ser feito
-	 * precisamos usar @OneToMany(mappedBy = "nomeDoAtributoDoOutroLadoDaAssociacao")
+	 * precisamos usar o annotation @OneToMany(mappedBy = "nomeDoAtributoDoOutroLadoDaAssociacao")
 	 * 
 	 * Quando você tem uma associação para muitos, o JPA não carrega
 	 * o objeto para muitos, isso é oque chamamos de lazy loading, isso

@@ -5,12 +5,14 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "tb_category")
@@ -23,7 +25,23 @@ public class Category implements Serializable {
 	private Long id;
 	private String name;
 	
-	@Transient
+	/* 
+	 * A instanciação é feita para a minha coleção não comece valendo
+     * null, ao instanciar, ela começará vazia, porém instânciada.
+     * 
+	 * Estamos a usar a estrura Set, pois ela não admite repetições
+	 * e não podemos ter um Category com Products repetidos.
+	 * 
+	 * @Transient - annotation para informar ao jpa para não
+   *   interpretar esse propriedade.
+   *   
+   *   A função do método construtor é de inicializar os atributos
+   *   do objeto, a coleção poderia estar dentro do construtor
+   *   para ser inicializada, porém ela já foi inicializada antes dele.
+   *   
+	 * */
+	@JsonIgnore
+	@ManyToMany(mappedBy = "categories")
 	private Set<Product> products = new HashSet<>();
 	
 	/* Construtor padrão(sem argumentos) */

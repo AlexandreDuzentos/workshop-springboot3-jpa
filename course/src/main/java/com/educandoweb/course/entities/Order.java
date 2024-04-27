@@ -55,6 +55,7 @@ public class Order implements Serializable {
 	 * @JoinColumn - annotation para informar para o jpa o nome
 	 * do campo da chave estrangeira que será criada no banco de
 	 * dados na tabela Order.
+	 * 
 	 * */
 	@ManyToOne
 	@JoinColumn(name = "client_id")

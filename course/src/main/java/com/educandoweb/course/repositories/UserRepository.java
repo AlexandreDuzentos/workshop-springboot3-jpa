@@ -10,6 +10,9 @@ import com.educandoweb.course.entities.User;
  * defender methods para acesso a dados para a entidade passada como
  * parâmetro para a interface JpaRepository.
  * 
+ * A interface JpaRepository é parametrizada por tipo, recebe dois tipos,
+ * sendo o primeiro a entidade e o segundo o tipo do id da entidade.
+ * 
  * @Repository - essa annotation serve para informar para o spring que
  * esse é uma classe de repositório e também para registrar a minha
  * classe como um componente do spring, porém ela aqui é opcional, pois
