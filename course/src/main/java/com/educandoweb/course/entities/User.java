@@ -66,7 +66,7 @@ public class User implements Serializable {
 	   * 
 	   * Deve ter apenas o método get.
 	   * 
-	   * O lado do um para muitos também pode ser mapeado no jpa,
+	   * O lado do um também pode ser mapeado no jpa,
 	   * é opcional, caso você queira acessar um objeto do tipo
 	   * User e automaticamente acessar os Orders associados ao user.
 	   * 
@@ -94,7 +94,8 @@ public class User implements Serializable {
 	   * os orders associados a ele também são carregados e cada um desses
 	   * Orders também chama o User associado a ele, daí o loop infinito,
 	   * então essa annotation já impede que os Orders associados ao
-	   * user sejam carregados.
+	   * User sejam carregados, ela já corta a associação de mão dupla.
+	   * 
 	   * */
 	  @JsonIgnore
 	  @OneToMany(mappedBy = "client")

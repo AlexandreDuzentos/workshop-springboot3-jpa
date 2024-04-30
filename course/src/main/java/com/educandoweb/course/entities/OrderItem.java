@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import com.educandoweb.course.entities.pk.OrderItemPK;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -50,11 +51,16 @@ public class OrderItem implements Serializable {
 	 *  orderItem.getProduct();
 	 *  
 	 *  @EmbeddedId - annotation para informar para o jpa que a chave
-	 *  primária é uma chave composta.
+	 *  primária é uma chave composta ou seja, é composta por dois
+	 *  campos.
+	 *  
+	 *  Sempre que formos utilizar uma classe auxiliar que é o id
+	 *  composto, você instância-la para que seu objeto não esteja
+	 *  valendo null.
 	 * */
 	
 	@EmbeddedId
-	private OrderItemPK id;
+	private OrderItemPK id = new OrderItemPK();
 	
 	/* O atributo price está sendo repetido na classe atual, para que
 	 * caso num futuro o preço do Product mude na tabela Product, eu
@@ -69,13 +75,19 @@ public class OrderItem implements Serializable {
 	/* 
 	 * O id não será passado para o construtor da forma convencional.
 	 * */
-	public OrderItem(Order order, Product product, Double price, Integer quantity) {
+	public OrderItem(Order order, Product product, Integer quantity, Double price) {
 		id.setOrder(order);
 		id.setProduct(product);
 		this.price = price;
 		this.quantity = quantity;
 	}
 	
+	/* A annotation foi colocada aqui, porque o atributo do tipo Order 
+	 * não está diretamente na classe OrderItem, então devemos
+	 * colocar a annotation por cima do método que retorna os Orders,
+	 * afim de parar associação de mão dupla.
+	 * */
+	@JsonIgnore
 	public Order getOrder() {
 		return id.getOrder();
 	}
