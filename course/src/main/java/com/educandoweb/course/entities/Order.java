@@ -9,6 +9,7 @@ import java.util.Set;
 import com.educandoweb.course.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -64,12 +66,42 @@ public class Order implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "client_id")
 	private User client;
-	
+
 	@OneToMany(mappedBy = "id.order")
 	private Set<OrderItem> items = new HashSet<>();
 	
+	/* Na relação entre os objetos payment e Order, o objeto Order
+	 * é a entidade independente, pois podemos ter um Order sem
+	 * um Payment por conta multiplicidade entre eles, Order tem no
+	 * mínino 0 payments e no máximo 1 Payment, ou seja, é opcional
+	 * que o Order tenha payment, já no caso de Payment ela é a entidade
+	 * dependente, pois não podemos ter um payment sem um Order, a multiplicidade
+	 * entre eles é: Payment tem no mínimo um Order e no máximo um Order.
+	 * 
+	 * Por conta do Order ser o lado independente, o JPA não carrega
+	 * o Payment associado a ele por padrão(automáticamente), para que 
+	 * isso seja feito esse o lado independente da associação também
+	 * precisa ser mapeado, daí a annotation
+	 * @OneToOne(mappedBy = "nomedoatributodooutrolado").
+	 * 
+	 * No caso da associação um para um nós estamos mapeando as duas
+	 * entidades para ter o mesmo id, como assim? se o Order for 
+	 * código 5, o Payment desse Order também será código 5, e no
+	 * caso de mapear relacionamento um para um o mesmo id é obrigatório
+	 * colocar isso também cascade = CascadeType.ALL.
+	 * */
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+	private Payment payment;
+	
 	public Order() {}
 	
+	/* O atributo payment não foi colocado no construtor porque
+	 * podemos ter um Order sem um payment, então não há obrigatoriedade
+	 * de no construtor colocar o atributo payment, há outras formas de
+	 * associar um Payment a um Order, um método
+	 * na classe Order para associar um Payment a um Order, que é o
+	 * método setPayment.
+	 * */
 	public Order(Long id, Instant moment,OrderStatus orderStatus, User client) {
 		this.id = id;
 		this.moment = moment;
@@ -118,6 +150,14 @@ public class Order implements Serializable {
 	
 	public Set<OrderItem> getItems(){
 		return items;
+	}
+	
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
 	}
 
 	@Override
