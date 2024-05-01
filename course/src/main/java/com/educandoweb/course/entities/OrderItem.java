@@ -23,7 +23,8 @@ public class OrderItem implements Serializable {
 	 * auxiliar cujo seus atributos são formados pelo par de atributos
 	 * Order e Product, isso porque o atributo identificador de um 
 	 * orderItem precisa ser uma chave primária composta formada pelo
-	 * order e pelo item do order(Product).
+	 * order e pelo item do order(Product) e no paradigma orientado
+	 * a objetos não temos o conceito de cháve primária composta.
 	 * */
 	
 	/* Não foi feito um getter direto para o atributo id, para que
