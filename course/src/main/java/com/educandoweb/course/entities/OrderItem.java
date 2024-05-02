@@ -86,7 +86,9 @@ public class OrderItem implements Serializable {
 	/* A annotation foi colocada aqui, porque o atributo do tipo Order 
 	 * não está diretamente na classe OrderItem, então devemos
 	 * colocar a annotation por cima do método que retorna os Orders,
-	 * afim de parar associação de mão dupla.
+	 * afim de parar associação de mão dupla, na plataforma java EE,o
+	 * que vale é o método get, por isso esse método precisa ter o
+	 * prefixo get para que os Orders aparecem no JSON.
 	 * */
 	@JsonIgnore
 	public Order getOrder() {
@@ -119,6 +121,17 @@ public class OrderItem implements Serializable {
 
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
+	}
+	
+	/* Na plataforma java EE, oque vale é o método get, então para
+	 * o subTotal apareça no JSON, ele precisa ter o prefixo
+	 * get.
+	 * 
+	 * Método responsável por calcular o subtotal, ou seja, o total
+	 * de um OrderItem(product).
+	 * */
+	public double getSubTotal() {
+		return price * quantity;
 	}
 
 	@Override

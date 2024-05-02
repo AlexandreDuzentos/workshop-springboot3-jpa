@@ -159,6 +159,20 @@ public class Order implements Serializable {
 	public void setPayment(Payment payment) {
 		this.payment = payment;
 	}
+	
+	/* Método responsável por calcular o total de todos OrderItem
+	 * associados ao Order.
+	 * 
+	 * O prefixo get é por conta do padrão usado pelo java EE para
+	 * que o resultado desse método possa ser exibido no JSON.
+	 *  */
+	public double getTotal() {
+		double sum = 0.0;
+		for(OrderItem orderItem : items) {
+			sum += orderItem.getSubTotal();
+		}
+		return sum;
+	}
 
 	@Override
 	public int hashCode() {

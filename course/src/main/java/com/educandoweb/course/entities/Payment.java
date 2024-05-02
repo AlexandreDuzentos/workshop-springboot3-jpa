@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,9 +25,13 @@ public class Payment implements Serializable {
   private Long id;
   private Instant moment;
   
-  /* A annotation OneToOne coloca-se na entidade dependente */
+  /* 
+   * @MapsId - annotation que informa para o jpa que ele deve usar
+   * mesma chave primária para as duas entidades(Order e Payment).
+   * */
   @OneToOne
   @MapsId
+  @JsonIgnore
   private Order order;
   
   public Payment() {
