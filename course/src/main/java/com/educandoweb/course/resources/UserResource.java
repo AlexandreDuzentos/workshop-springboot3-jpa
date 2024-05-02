@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -77,5 +79,24 @@ public class UserResource {
 		User user = userService.findById(id);
 		return ResponseEntity.ok().body(user);
 	}
+	
+	/* @PostMapping - annotation para indicar que esse método atende a requisições
+	 * via post
+	 * 
+	 * @RequestBody - annotation para indicar que o objeto passado
+	 * com parâmetro para o método insert chegará no formato JSON
+	 * e será desserializado para um objeto User pela minha
+	 * biblioteca de serialização e desserialização(para json).
+	 *  */
+	@PostMapping
+	public ResponseEntity<User> insert(@RequestBody User obj){
+		/* Reaproveitando a variável obj do tipo User que foi passada
+		 * como parâmetro para o método, variáveis declaradas no parâmetro
+		 * do método pertencem ao escopo do método.
+		 * */
+		obj = userService.insert(obj);
+		return ResponseEntity.ok().body(obj);
+	}
+	
 	  
 }
