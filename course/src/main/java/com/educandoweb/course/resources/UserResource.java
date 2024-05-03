@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,6 +42,9 @@ public class UserResource {
 	 * 
 	 * @GetMapping - Annotation para indicar que esse método
 	 * responde a requisições http get no endpoint /users.
+	 * 
+	 * No padrão rest, o método usado para recuperar registros é
+	 * o get.
 	 *  */
 	@GetMapping
 	public ResponseEntity<List<User>> findAll(){
@@ -87,6 +91,8 @@ public class UserResource {
 	 * com parâmetro para o método insert chegará no formato JSON
 	 * e será desserializado para um objeto User pela minha
 	 * biblioteca de serialização e desserialização(para json).
+	 * 
+	 * O método usado para salvar dados no padrão rest é o post.
 	 *  */
 	@PostMapping
 	public ResponseEntity<User> insert(@RequestBody User obj){
@@ -97,6 +103,23 @@ public class UserResource {
 		obj = userService.insert(obj);
 		return ResponseEntity.ok().body(obj);
 	}
+	
+	
+	/* @DeleteMapping - annotation para indicar que esse método receberá
+	 * requisições http via delete.
+	 * */
+	@DeleteMapping(value = "/{id}")
+     public ResponseEntity<Void> delete(@PathVariable Long id){
+    	 userService.delete(id);
+    	 
+    	 /*
+    	  * O método noContent está sendo usado porque a resposta
+    	  * a uma requisição via delete feita no padrão rest é sem corpo, ele 
+    	  * indica isso e o código de resposta de uma resposta sem
+    	  * corpo é o 204, ele já tratará disso também.
+    	  * */
+    	 return ResponseEntity.noContent().build();
+     }
 	
 	  
 }
