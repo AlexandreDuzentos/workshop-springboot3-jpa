@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -99,6 +100,9 @@ public class UserResource {
 		/* Reaproveitando a variável obj do tipo User que foi passada
 		 * como parâmetro para o método, variáveis declaradas no parâmetro
 		 * do método pertencem ao escopo do método.
+		 * 
+		 * Ordem de execução: primeiro é executada a operação e segundo
+		 * o resultado da operação é atribuído para a variável obj.
 		 * */
 		obj = userService.insert(obj);
 		return ResponseEntity.ok().body(obj);
@@ -107,6 +111,8 @@ public class UserResource {
 	
 	/* @DeleteMapping - annotation para indicar que esse método receberá
 	 * requisições http via delete.
+	 * 
+	 * O métod usado para deletar dados no padrão rest é o Delete.
 	 * */
 	@DeleteMapping(value = "/{id}")
      public ResponseEntity<Void> delete(@PathVariable Long id){
@@ -120,6 +126,13 @@ public class UserResource {
     	  * */
     	 return ResponseEntity.noContent().build();
      }
+	
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User obj) {
+		obj = userService.update(id, obj);
+		
+		return ResponseEntity.ok().body(obj);
+	}
 	
 	  
 }

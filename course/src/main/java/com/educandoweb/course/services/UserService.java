@@ -58,4 +58,27 @@ public class UserService {
 	public void delete(Long id) {
 		userRepository.deleteById(id);
 	}
+	
+	public User update(Long id, User obj) {
+		/* O método getReferenceById instância um User com o id passado
+		 * como argumento para ele, mas ele
+		 * não vai para o banco de dados ainda, ele apenas deixa
+		 * o objeto monitorado pelo jpa.
+		 * */
+		User entity = userRepository.getReferenceById(id);
+		
+		updateData(entity, obj);
+		
+		return userRepository.save(entity);
+	}
+
+	/* Método responsável por atualizar os dados do objeto entity
+	 * com os dados do objeto obj.
+	 * */
+	private void updateData(User entity, User obj) {
+		entity.setName(obj.getName());
+		entity.setEmail(obj.getEmail());
+		entity.setPhone(obj.getPhone());
+		
+	}
 }
