@@ -140,7 +140,7 @@ public class UserResource {
 	/* @DeleteMapping - annotation para indicar que esse método receberá
 	 * requisições http via delete.
 	 * 
-	 * O métod usado para deletar dados no padrão rest é o Delete.
+	 * O método usado para deletar dados no padrão rest é o Delete.
 	 * */
 	@DeleteMapping(value = "/{id}")
      public ResponseEntity<Void> delete(@PathVariable Long id){
