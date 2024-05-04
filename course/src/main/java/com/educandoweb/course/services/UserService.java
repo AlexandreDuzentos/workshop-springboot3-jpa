@@ -12,6 +12,8 @@ import com.educandoweb.course.repositories.UserRepository;
 import com.educandoweb.course.services.exceptions.DatabaseException;
 import com.educandoweb.course.services.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 /* @Component - essa annotation serve para registrar a minha classe
  * como um componente do spring.
  * 
@@ -65,8 +67,18 @@ public class UserService {
 	public void delete(Long id) {
 		try {
 			if(userRepository.existsById(id)) {
-				userRepository.deleteById(id);
+				/*
+				 * aqui pode ser lançada uma exceção do tipo DBIntegrityException que 
+				   ocorre quando tenta-se deletar um registro que tem outro registros
+				   associados a ele, por exemplo, um user que tem um Order associado
+				   a ele não pode ser deletado, nesse caso o recurso para o id informado
+				   existe, porém ele não ser deletado pois tem um registro pai associado a ele.
+				*/
+				userRepository.deleteById(id); 
 			} else {
+				/* Essa exceção será lançada quando não existir um
+				 * recurso para o id informado, ou seja,um registro.
+				 * */
 			   throw new ResourceNotFoundException(id);
 			}
 		} catch(DataIntegrityViolationException e) {
@@ -79,12 +91,22 @@ public class UserService {
 		 * como argumento para ele, mas ele
 		 * não vai para o banco de dados ainda, ele apenas deixa
 		 * o objeto monitorado pelo jpa.
+		 * 
+		 * A exceção EntityNotFoundException será lançada quando o
+		 * id informado para atulizar um registro, não 
+		 * corresponder a nenhum registro existente.
 		 * */
-		User entity = userRepository.getReferenceById(id);
+		try {
+			User entity = userRepository.getReferenceById(id);
+			
+			updateData(entity, obj);
+			
+			return userRepository.save(entity);
+		} catch(EntityNotFoundException e) {
+			e.printStackTrace();
+			throw new ResourceNotFoundException(id);
+		}
 		
-		updateData(entity, obj);
-		
-		return userRepository.save(entity);
 	}
 
 	/* Método responsável por atualizar os dados do objeto entity
