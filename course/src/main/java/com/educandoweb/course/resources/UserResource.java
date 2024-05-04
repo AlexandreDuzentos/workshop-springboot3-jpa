@@ -1,5 +1,6 @@
 package com.educandoweb.course.resources;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.educandoweb.course.entities.User;
 import com.educandoweb.course.services.UserService;
@@ -103,9 +105,35 @@ public class UserResource {
 		 * 
 		 * Ordem de execução: primeiro é executada a operação e segundo
 		 * o resultado da operação é atribuído para a variável obj.
+		 * 
+		 * Quando você insere um recurso é mais adequado você
+		 * devolver o código de resposta http 201, o 201 é um código
+		 * específico do http que significa que você criou um novo
+		 * recurso.
+		 * 
+		 * O método created espera um objeto do tipo URI, porque para o
+		 * padrão http, quando você vai retornar um código 201, é esperado
+		 * que a resposta contenha um cabeçalho chamado location, contendo
+		 * o endereço do novo recurso que você inseriu. 
 		 * */
+		
+		/*
+		 * Criando um objeto do tipo URI que conterá o novo
+		 * endereço do novo recurso que você inseriu.
+		 * 
+		 * O método path recebe um padrão para a montagem da url.
+		 * 
+		 * O método buildAndExpand espera o id que foi inserido.
+		 * 
+		 * O método toUri converte o objeto para um objeto tipo URI.
+		 */
+		
 		obj = userService.insert(obj);
-		return ResponseEntity.ok().body(obj);
+		
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().
+				path("/{id}").buildAndExpand(obj.getId()).toUri();
+				
+		return ResponseEntity.created(uri).body(obj);
 	}
 	
 	

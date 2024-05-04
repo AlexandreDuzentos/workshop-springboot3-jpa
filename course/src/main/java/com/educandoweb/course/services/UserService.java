@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.educandoweb.course.entities.User;
 import com.educandoweb.course.repositories.UserRepository;
+import com.educandoweb.course.services.exceptions.ResourceNotFoundException;
 
 /* @Component - essa annotation serve para registrar a minha classe
  * como um componente do spring.
@@ -47,8 +48,12 @@ public class UserService {
 		/* A operação get do objeto genérico Optional retorna
 		 * um objeto do tipo com a qual a classe Optional foi
 		 * parametrizada.
+		 * 
+		 * O método orElseThrown tenta chamar o método get, mas se
+		 * não tiver usuário(User) na resposta da consulta ele
+		 * lança uma exceção
 		 * */
-		return opt.get();
+		return opt.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public User insert(User obj) {
